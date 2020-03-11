@@ -14,7 +14,7 @@ lint:
 	composer run-script phpcs -- --standard=PSR12 routes
 
 start:
-	heroku local -f Procfile.dev
+	heroku local -f Procfile
 
 setup:
 	composer install

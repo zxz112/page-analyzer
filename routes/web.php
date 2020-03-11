@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function() {
-    return view('main');
-});
+Route::get('/', 'DomainController@main')->name('main');
+
+Route::post('/domains', 'DomainController@store')->name('store');
+
+Route::get('/domains/{id}', 'DomainController@show')->name('show');
+
+Route::get('/domains', 'DomainController@index')->name('index');
