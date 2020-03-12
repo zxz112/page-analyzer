@@ -30,7 +30,7 @@ class DomainController extends Controller
     }
 
     public function store(Request $request)
-    {   
+    {
         $domain = parse_url($request->input('domain'));
         if (!array_key_exists('scheme', $domain) || !array_key_exists('host', $domain)) {
             flash('Uncorrect URL ')->error();
