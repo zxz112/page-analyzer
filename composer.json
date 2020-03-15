@@ -54,6 +54,7 @@
     "prefer-stable": true,
     "scripts": {
         "phpcs":"phpcs",
+        "phpunit":"phpunit",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

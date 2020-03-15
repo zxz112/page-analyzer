@@ -3,25 +3,26 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class DomainsTest extends TestCase
 {
     /**
-     * A basic test example.
+     * A basic feature test example.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testExample()
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
     }
 
-    public function testDomainsTest()
+    public function testDomain()
     {
-        $response = $this->get('/domains');
+        $response = $this->get(route('index'));
 
         $response->assertStatus(200);
     }

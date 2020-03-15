@@ -16,8 +16,7 @@
     <tr>  
       <td>{{$domain->id}}</td>
       <td><a href="{{route('show', $domain->id)}}"> {{$domain->name}}</a></td>
-      <td>{{$domain->created_at}}</td>
-      <td>{{$domain->updated_at}}</td>
+      <td>{{$domain->updated}}</td>
     </tr>
     @endforeach
   </tbody>

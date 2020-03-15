@@ -20,13 +20,22 @@ class DomainController extends Controller
     public function show($id)
     {
         $domain = DB::table('domains')->find($id);
-        return view('show', compact('domain'));
+        $checks = DB::table('domain_checks')->where('domain_id', $id)->get();
+        return view('show', compact(['domain', 'checks']));
     }
 
     public function index()
     {
-        $domains = DB::table('domains')->get();
+        // $domains = DB::table('domains')->get();
+        // $check = DB::table('domains')->join('domain_checks', 'domains.id', '=', 'domain_checks.domain_id')->select('domains.name','domain_checks.updated_at'))->get();
+        // $domains = DB::select('select domains.id as id, domains.name as name, max(domain_checks.updated_at) as updated from domains join domain_checks on domains.id = domain_checks.domain_id
+        // group by domains.id');
+        $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated from domains 
+        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name');
+        dump($domains);
+        // $domains = DB::table('domains')->get();
         return view('index', compact('domains'));
+        
     }
 
     public function store(Request $request)
@@ -49,4 +58,14 @@ class DomainController extends Controller
         flash('Url already exists ')->success();
         return redirect()->route('index');
     }
+
+    public function check(Request $request)
+    {
+        $id = $request->id;
+        $timeNow = Carbon::now()->toDateTimeString();
+        DB::table('domain_checks')->insert(['domain_id' => $id, 'status_code' => 200, 'created_at' => $timeNow, 'h1' => '', 'description' => '', 'updated_at' => $timeNow]);
+        flash('Url was checked ')->success();
+        return redirect()->route('show', $id);
+    }
+
 }
