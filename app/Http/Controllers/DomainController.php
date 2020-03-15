@@ -26,16 +26,9 @@ class DomainController extends Controller
 
     public function index()
     {
-        // $domains = DB::table('domains')->get();
-        // $check = DB::table('domains')->join('domain_checks', 'domains.id', '=', 'domain_checks.domain_id')->select('domains.name','domain_checks.updated_at'))->get();
-        // $domains = DB::select('select domains.id as id, domains.name as name, max(domain_checks.updated_at) as updated from domains join domain_checks on domains.id = domain_checks.domain_id
-        // group by domains.id');
         $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated from domains 
         left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name');
-        dump($domains);
-        // $domains = DB::table('domains')->get();
         return view('index', compact('domains'));
-        
     }
 
     public function store(Request $request)
@@ -67,5 +60,4 @@ class DomainController extends Controller
         flash('Url was checked ')->success();
         return redirect()->route('show', $id);
     }
-
 }
