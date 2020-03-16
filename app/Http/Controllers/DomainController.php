@@ -25,10 +25,10 @@ class DomainController extends Controller
 
     public function index()
     {
-        $last = DB::table('domain_checks')->select('status_code', 'domain_id', 'id')->groupBy('domain_id')->get();
-        dump($last);
-        $domains = DB::select('select domains.id, domains.name, max(domain_checks.updated_at) as updated from domains
-        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name order by domains.id');
+        // $last = DB::table('domain_checks')->select('status_code', 'domain_id', 'id')->groupBy('domain_id')->get();
+        // dump($last);
+        $domains = DB::select('select domains.id as ide, domains.name as nameDom, max(domain_checks.updated_at) as updated from domains
+        left join domain_checks on ide = domain_checks.domain_id group by ide, nameDom order by ide');
 
         return view('index', compact('domains'));
     }
