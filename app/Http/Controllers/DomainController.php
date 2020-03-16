@@ -25,7 +25,7 @@ class DomainController extends Controller
 
     public function index()
     {
-        $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated from domains 
+        $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated, domain_checks.status_code as status from domains 
         left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name');
         return view('index', compact('domains'));
     }
