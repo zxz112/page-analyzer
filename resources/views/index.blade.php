@@ -14,8 +14,8 @@
   <tbody>
   @foreach ($domains as $domain)
     <tr> 
-      <td>{{$domain->ide}}</td>
-      <td><a href="{{route('show', $domain->ide)}}"> {{$domain->nameDom}}</a></td>
+      <td>{{$domain->id}}</td>
+      <td><a href="{{route('show', $domain->id)}}"> {{$domain->name}}</a></td>
       <td>{{$domain->updated}}</td>
     </tr>
     @endforeach
