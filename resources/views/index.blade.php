@@ -13,8 +13,8 @@
   </thead>
   <tbody>
   @foreach ($domains as $domain)
-    <tr>
-    <?php dd($domain); ?>
+    <tr> 
+    <?php dump($domain); ?>
       <!-- <td>{{$domain->id}}</td>
       <td><a href="{{route('show', $domain->id)}}"> {{$domain->name}}</a></td>
       <td>{{$domain->status_code}}</td> -->
