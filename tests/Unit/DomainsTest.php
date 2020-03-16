@@ -1,29 +1,30 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class DomainsTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * A basic unit test example.
      *
      * @return void
      */
-    public function testExample()
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
-
-    public function testDomain()
+    public function testDomainsIndex()
     {
         $response = $this->get(route('index'));
 
         $response->assertStatus(200);
     }
+
+    // public function testDomainsShow()
+    // {
+
+    //     $response = $this->get(route('show'));
+
+    //     $response->assertStatus(200);
+    // }
 }

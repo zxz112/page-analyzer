@@ -13,9 +13,5 @@
     {{Form::text('domain')}}
     {{Form::submit('Click Me!')}}
 {{Form::close()}}
-        <!-- <form action="{{ route('store') }}" method="post" class="d-flex justify-content-center form-inline">
-            <input type="hidden" name="_token" value="RjXXnPdhNqkzhRXyS8UwSpbUOBdBBHHAjYtRFPDc">            <input type="text" class="form-control form-control-lg" placeholder="https://www.example.com">
-            <button type="submit" class="btn btn-lg btn-primary ml-3">Add</button>
-        </form> -->
 </div>
 @endsection

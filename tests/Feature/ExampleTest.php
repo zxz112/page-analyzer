@@ -19,7 +19,7 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testDomainsTest()
+    public function testBasic2Test()
     {
         $response = $this->get('/domains');
 

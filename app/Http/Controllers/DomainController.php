@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-require '../vendor/autoload.php';
-
 use Carbon\Carbon;
-
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,8 +25,8 @@ class DomainController extends Controller
 
     public function index()
     {
-        $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated from domains 
-        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name');
+        $domains = DB::select('select domains.id, domains.name as name, max(domain_checks.updated_at) as updated, domain_checks.status_code from domains 
+        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name order by domains.id');
         return view('index', compact('domains'));
     }
 
@@ -54,10 +53,20 @@ class DomainController extends Controller
 
     public function check(Request $request)
     {
-        $id = $request->id;
+        $idDomain = $request->id;
+        $domain = DB::table('domains')->find($idDomain);
+        $domainName = $domain->name;
+        $client = new Client();
+        try {
+            $res = $client->request('GET', $domainName);
+        } catch (RequestException $e) {
+            flash('Error')->error();
+            return redirect()->route('show', $idDomain);
+        }
+        $statusCode = $res->getStatusCode();
         $timeNow = Carbon::now()->toDateTimeString();
-        DB::table('domain_checks')->insert(['domain_id' => $id, 'status_code' => 200, 'created_at' => $timeNow, 'h1' => '', 'description' => '', 'updated_at' => $timeNow]);
+        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => '', 'description' => '', 'updated_at' => $timeNow]);
         flash('Url was checked ')->success();
-        return redirect()->route('show', $id);
+        return redirect()->route('show', $idDomain);
     }
 }
