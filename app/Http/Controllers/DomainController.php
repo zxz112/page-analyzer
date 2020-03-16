@@ -26,7 +26,7 @@ class DomainController extends Controller
     public function index()
     {
         $lastStatus = DB::table('domain_checks')
-                            ->select('id as ide', 'domain_id', 'status_code', DB::raw('MAX(updated_at) as last_update'))
+                            ->select('domain_id', 'status_code')
                             ->groupBy('domain_id');
         $domains = DB::table('domains')->leftJoinSub($lastStatus, 'last_status', function ($join) {
             $join->on('domains.id', '=', 'last_status.domain_id');
