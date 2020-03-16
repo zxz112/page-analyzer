@@ -31,7 +31,6 @@ class DomainController extends Controller
         $domains = DB::table('domains')->leftJoinSub($lastStatus, 'last_status', function ($join) {
             $join->on('domains.id', '=', 'last_status.domain_id');
         })->get();
-        dump($domains);
         return view('index', compact('domains'));
     }
 
