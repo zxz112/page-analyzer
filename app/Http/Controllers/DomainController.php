@@ -25,9 +25,7 @@ class DomainController extends Controller
 
     public function index()
     {
-        $lastStatus = DB::table('domain_checks')
-                            ->select('domain_id', 'status_code')
-                            ->groupBy('domain_id');
+        $lastStatus = DB::table('domain_checks')->select('domain_id', 'status_code')->groupBy('domain_id', 'status_code');
         $domains = DB::table('domains')->leftJoinSub($lastStatus, 'last_status', function ($join) {
             $join->on('domains.id', '=', 'last_status.domain_id');
         })->get();
