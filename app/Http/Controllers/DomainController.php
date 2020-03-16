@@ -19,14 +19,14 @@ class DomainController extends Controller
     public function show($id)
     {
         $domain = DB::table('domains')->find($id);
-        $checks = DB::table('domain_checks')->where('domain_id', $id)->get();
+        $checks = DB::table('domain_checks')->where('domain_id', $id)->orderBy('updated_at')->get();
         return view('show', compact(['domain', 'checks']));
     }
 
     public function index()
     {
         $domains = DB::select('select domains.id, domains.name, max(domain_checks.updated_at) as updated from domains 
-        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name');
+        left join domain_checks on domains.id = domain_checks.domain_id group by domains.id, domains.name order by domains.id');
         return view('index', compact('domains'));
     }
 
