@@ -42,7 +42,7 @@
 </table>
 {{Form::open(['url' => route('check')])}}
 <input type="hidden" name="id" value="{{$domain->id}}" />
-    {{Form::submit('Check!')}}
+    {{Form::submit('Check!', ['class' => 'btn btn-dark btn-bg'])}}
 {{Form::close()}}
 </div> 
 @endsection

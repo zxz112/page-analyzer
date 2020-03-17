@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class DomainController extends Controller
 {
@@ -32,11 +33,10 @@ class DomainController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'domain' => 'required|url',
+        ]);
         $domain = parse_url($request->input('domain'));
-        if (!array_key_exists('scheme', $domain) || !array_key_exists('host', $domain)) {
-            flash('Uncorrect URL ')->error();
-            return redirect()->route('main');
-        }
         $scheme = $domain['scheme'];
         $host = $domain['host'];
         $correctUrl = "{$scheme}://{$host}";
@@ -44,10 +44,11 @@ class DomainController extends Controller
         $countUrl = DB::table('domains')->where('name', $correctUrl)->count();
         if ($countUrl > 0) {
             DB::table('domains')->where('name', $correctUrl)->update(['updated_at' => $timeNow]);
+            flash('Url already exists ')->success();
         } else {
             DB::table('domains')->insert(['name' => $correctUrl, 'created_at' => $timeNow, 'updated_at' => $timeNow]);
+            flash('Url already added ')->success();
         }
-        flash('Url already exists ')->success();
         return redirect()->route('index');
     }
 
