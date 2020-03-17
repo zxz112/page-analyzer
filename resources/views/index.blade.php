@@ -1,3 +1,19 @@
+<?php
+use DebugBar\StandardDebugBar;
+
+$debugbar = new StandardDebugBar();
+$debugbarRenderer = $debugbar->getJavascriptRenderer();
+
+$debugbar["messages"]->addMessage("hello world!");
+?>
+<html>
+<head>
+    <?php echo $debugbarRenderer->renderHead() ?>
+</head>
+<body>
+    <?php echo $debugbarRenderer->render() ?>
+</body>
+</html>
 @extends('layouts.app')
 
 @section('content')
@@ -16,7 +32,7 @@
     <tr> 
       <td>{{$domain->id}}</td>
       <td><a href="{{route('show', $domain->id)}}"> {{$domain->name}}</a></td>
-      <td>{{$domain->status_code}}</td>
+      <td>{{$domain->status}}</td>
     </tr>
     @endforeach
   </tbody>
