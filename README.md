@@ -1,6 +1,9 @@
 [![Actions Status](https://github.com/zxz112/php-project-lvl3/workflows/{Laravel_workflow}/badge.svg)](https://github.com/zxz112/php-project-lvl3/actions)
 
-![](https://github.com/zxz112/actions/php-project-lvl3/.github/workflows/main.yml/badge.svg)
+
+![](https://github.com/php-project-lvl3/.github/workflows/main.yml/badge.svg
+
+![](https://github.com/zxz112/php-project-lvl3/.github/workflows/main.yml/badge.svg)
 https://limitless-garden-68924.herokuapp.com/
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
