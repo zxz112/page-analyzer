@@ -14,21 +14,23 @@ class DomainController extends Controller
     public function main()
     {
         $user = DB::table('domains')->get();
-        return view('main', compact('user'));
+        return view('domains.main', compact('user'));
     }
 
     public function show($id)
     {
         $domain = DB::table('domains')->find($id);
         $checks = DB::table('domain_checks')->where('domain_id', $id)->orderBy('updated_at')->get();
-        return view('show', compact(['domain', 'checks']));
+        return view('domains.show', compact(['domain', 'checks']));
     }
 
     public function index()
     {
-        $domains = DB::select('SELECT domains.id, domains.name, (SELECT status_code FROM domain_checks WHERE domains.id = domain_checks.domain_id ORDER BY updated_at 
-        DESC LIMIT 1) AS status FROM domains left JOIN domain_checks ON domains.id = domain_checks.domain_id GROUP BY domains.id');
-        return view('index', compact('domains'));
+        $domains = DB::select('SELECT domains.id, domains.name, 
+        (SELECT status_code FROM domain_checks WHERE domains.id = domain_checks.domain_id ORDER BY updated_at DESC LIMIT 1) 
+        AS status FROM domains 
+        left JOIN domain_checks ON domains.id = domain_checks.domain_id GROUP BY domains.id');
+        return view('domains.index', compact('domains'));
     }
 
     public function store(Request $request)

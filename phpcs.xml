@@ -8,6 +8,8 @@
     <arg value="np"/>
 
     <file>app/Http/Controllers/DomainController.php</file>
+    <file>tests/Feature</file>
+
 
     <rule ref="PSR12">
     </rule>
