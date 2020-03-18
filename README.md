@@ -1,4 +1,4 @@
-![](https://github.com/actions/php-project-lvl3/workflows/main/badge.svg)
+![](https://github.com/actions/php-project-lvl3/workflows/main.yml/badge.svg)
 https://limitless-garden-68924.herokuapp.com/
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
