@@ -8,9 +8,17 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use DiDom\Document;
 
 class DomainController extends Controller
 {
+    protected $client;
+
+    public function __construct(Client $guzzleClient)
+    {
+        $this->client = $guzzleClient;
+    }
+    
     public function main()
     {
         $user = DB::table('domains')->get();
@@ -59,17 +67,34 @@ class DomainController extends Controller
         $idDomain = $request->id;
         $domain = DB::table('domains')->find($idDomain);
         $domainName = $domain->name;
-        $client = new Client();
         try {
-            $res = $client->request('GET', $domainName);
+            $request = $this->client->request('GET', $domainName);
         } catch (RequestException $e) {
             flash('Error')->error();
             return redirect()->route('show', $idDomain);
         }
-        $statusCode = $res->getStatusCode();
+        $statusCode = $request->getStatusCode();
         $timeNow = Carbon::now()->toDateTimeString();
-        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => '', 'description' => '', 'updated_at' => $timeNow]);
+        $seo = $this->parseSeoHtml($domainName);
+        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $seo['h1'],
+        'description' => $seo['description'], 'keywords' => $seo['keywords'], 'updated_at' => $timeNow]);
         flash('Url was checked ')->success();
         return redirect()->route('show', $idDomain);
+    }
+
+    public function parseSeoHtml($url)
+    {
+        $document = new Document($url, true);
+        $h1Html = $document->first('h1');
+        $h1 = $h1Html ? $h1Html->text() : '';
+        $descriptionHtml = $document->first('meta[name=description]');
+        $description = $descriptionHtml ? $descriptionHtml->getAttribute('content') : '';
+        $keywordsHtml = $document->first('meta[name=keywords]');
+        $keywords = $keywordsHtml ? $keywordsHtml->getAttribute('content') : '';
+        return [
+            'h1' => $h1,
+            'description' => $description,
+            'keywords' => $keywords
+        ];
     }
 }

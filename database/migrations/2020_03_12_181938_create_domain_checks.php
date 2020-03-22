@@ -19,6 +19,7 @@ class CreateDomainChecks extends Migration
             $table->integer('status_code');
             $table->string('h1');
             $table->string('description');
+            $table->string('keywords');
             $table->timestamps();
         });
     }
