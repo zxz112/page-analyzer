@@ -30,3 +30,7 @@ jobs:
 
     - name: Check lint
       run: make lint
+      
+    - name: Tests
+      run: make test
+      
