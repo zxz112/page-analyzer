@@ -73,18 +73,18 @@ class DomainController extends Controller
             return redirect()->route('show', $idDomain);
         }
         $statusCode = $response->getStatusCode();
-        $htmlPage = $response->getBody()->getContents();
+        $html = $response->getBody()->getContents();
         $timeNow = Carbon::now()->toDateTimeString();
-        $parsedSeoHtml = $this->parseSeoHtml($htmlPage);
-        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $parsedSeoHtml['h1'],
-        'description' => $parsedSeoHtml['description'], 'keywords' => $parsedSeoHtml['keywords'], 'updated_at' => $timeNow]);
+        $seo = $this->parseSeoHtml($html);
+        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $seo['h1'],
+        'description' => $seo['description'], 'keywords' => $seo['keywords'], 'updated_at' => $timeNow]);
         flash('Url was checked ')->success();
         return redirect()->route('show', $idDomain);
     }
 
-    public function parseSeoHtml($htmlPage)
+    public function parseSeoHtml($html)
     {
-        $document = new Document($htmlPage);
+        $document = new Document($html);
         $h1Html = $document->first('h1');
         $h1 = $h1Html ? $h1Html->text() : '';
         $descriptionHtml = $document->first('meta[name=description]');
