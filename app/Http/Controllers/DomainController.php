@@ -57,7 +57,7 @@ class DomainController extends Controller
             flash('Url already exists ')->success();
         } else {
             DB::table('domains')->insert(['name' => $correctUrl, 'created_at' => $timeNow, 'updated_at' => $timeNow]);
-            flash('Url already added ')->success();
+            flash('Url has been added  ')->success();
         }
         return redirect()->route('index');
     }
@@ -79,7 +79,7 @@ class DomainController extends Controller
         $seo = $this->parseSeoHtml($html);
         DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $seo['h1'],
         'description' => $seo['description'], 'keywords' => $seo['keywords'], 'updated_at' => $timeNow]);
-        flash('Url was checked ')->success();
+        flash(' Website has been checked! ')->success();
         return redirect()->route('show', $idDomain);
     }
 
