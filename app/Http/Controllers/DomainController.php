@@ -21,8 +21,7 @@ class DomainController extends Controller
     
     public function main()
     {
-        $user = DB::table('domains')->get();
-        return view('domains.main', compact('user'));
+        return view('domains.main');
     }
 
     public function show($id)
@@ -74,18 +73,18 @@ class DomainController extends Controller
             return redirect()->route('show', $idDomain);
         }
         $statusCode = $response->getStatusCode();
-        $html = $response->getBody()->getContents();
+        $htmlPage = $response->getBody()->getContents();
         $timeNow = Carbon::now()->toDateTimeString();
-        $seo = $this->parseSeoHtml($html);
-        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $seo['h1'],
-        'description' => $seo['description'], 'keywords' => $seo['keywords'], 'updated_at' => $timeNow]);
+        $parsedSeoHtml = $this->parseSeoHtml($htmlPage);
+        DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $parsedSeoHtml['h1'],
+        'description' => $parsedSeoHtml['description'], 'keywords' => $parsedSeoHtml['keywords'], 'updated_at' => $timeNow]);
         flash('Url was checked ')->success();
         return redirect()->route('show', $idDomain);
     }
 
-    public function parseSeoHtml($html)
+    public function parseSeoHtml($htmlPage)
     {
-        $document = new Document($html);
+        $document = new Document($htmlPage);
         $h1Html = $document->first('h1');
         $h1 = $h1Html ? $h1Html->text() : '';
         $descriptionHtml = $document->first('meta[name=description]');
