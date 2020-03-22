@@ -2,17 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Exception\RequestException;
 
 class DomainsTest extends TestCase
 {
@@ -64,7 +60,7 @@ class DomainsTest extends TestCase
         ]);
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
-        $this->app->instance(Client::class, $client);
+        $this->app->instance('GuzzleHttp\Client', $client);
         DB::table('domains')->insert(['name' => $name]);
         $id = DB::table('domains')->where('name', '=', $name)->value('id');
         $this->post(route('check', ['id' => $id]));

@@ -68,23 +68,24 @@ class DomainController extends Controller
         $domain = DB::table('domains')->find($idDomain);
         $domainName = $domain->name;
         try {
-            $request = $this->client->request('GET', $domainName);
+            $response = $this->client->request('GET', $domainName);
         } catch (RequestException $e) {
             flash('Error')->error();
             return redirect()->route('show', $idDomain);
         }
-        $statusCode = $request->getStatusCode();
+        $statusCode = $response->getStatusCode();
+        $html = $response->getBody()->getContents();
         $timeNow = Carbon::now()->toDateTimeString();
-        $seo = $this->parseSeoHtml($domainName);
+        $seo = $this->parseSeoHtml($html);
         DB::table('domain_checks')->insert(['domain_id' => $idDomain, 'status_code' => $statusCode, 'created_at' => $timeNow, 'h1' => $seo['h1'],
         'description' => $seo['description'], 'keywords' => $seo['keywords'], 'updated_at' => $timeNow]);
         flash('Url was checked ')->success();
         return redirect()->route('show', $idDomain);
     }
 
-    public function parseSeoHtml($url)
+    public function parseSeoHtml($html)
     {
-        $document = new Document($url, true);
+        $document = new Document($html);
         $h1Html = $document->first('h1');
         $h1 = $h1Html ? $h1Html->text() : '';
         $descriptionHtml = $document->first('meta[name=description]');
