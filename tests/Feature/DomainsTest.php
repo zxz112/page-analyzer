@@ -8,10 +8,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+
 class DomainsTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * A basic feature test example.
      *
@@ -28,7 +27,7 @@ class DomainsTest extends TestCase
     public function testStore()
     {
         $domain = 'https://mail.ru';
-        $response = $this->post(route('store', ['domain' => $domain]));
+        $response = $this->post(route('domain.store', ['domain' => $domain]));
         $response->assertSessionHasNoErrors();
         $response->assertStatus(302);
         $this->assertDatabaseHas('domains', ['name' => $domain]);
@@ -36,7 +35,7 @@ class DomainsTest extends TestCase
 
     public function testIndex()
     {
-        $response = $this->get(route('index'));
+        $response = $this->get(route('domain.index'));
 
         $response->assertStatus(200);
     }
@@ -46,7 +45,7 @@ class DomainsTest extends TestCase
         $name = 'https://yandex.ru';
         DB::table('domains')->insert(['name' => $name]);
         $id = DB::table('domains')->where('name', '=', $name)->value('id');
-        $response = $this->get(route('show', $id));
+        $response = $this->get(route('domain.show', $id));
 
         $response->assertStatus(200);
     }
@@ -63,7 +62,7 @@ class DomainsTest extends TestCase
         $this->app->instance('GuzzleHttp\Client', $client);
         DB::table('domains')->insert(['name' => $name]);
         $id = DB::table('domains')->where('name', '=', $name)->value('id');
-        $this->post(route('check', ['id' => $id]));
+        $this->post(route('check.store', ['id' => $id]));
         $this->assertDatabaseHas('domain_checks', ['status_code' => 200 , 'domain_id' => $id, 'h1' => 'h1',
         'description' => 'description', 'keywords' => 'keywords']);
     }
