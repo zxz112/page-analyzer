@@ -33,21 +33,11 @@ class DomainController extends Controller
 
     public function index()
     {
-        // DB::table('domain_checks')->select('domain_id', 'status_code')->groupBy('domain_id')->latest();
+
         $LastChecked = DB::table('domain_checks')->whereRaw('id in (SELECT MAX(id) FROM domain_checks GROUP BY domain_id)');
         $domains = DB::table('domains')->select('domains.id', 'name', 'status_code')->leftJoinSub($LastChecked, 'lastCheck', function ($join) {
             $join->on('domains.id', '=', 'lastCheck.domain_id');
-        })->get();
-        // DB::select('Select * from domain_checks where id in (SELECT MAX(id) FROM domain_checks GROUP BY domain_id) right JOIN domains on domains.id = domain_checks.domain_id');
-        // $lastStatus = DB::table('domain_checks')->select('domain_id', 'status_code')->groupBy('domain_id', 'status_code');
-        // $domains = DB::table('domains')->leftJoinSub($lastStatus, 'last_status', function ($join) {
-        //     $join->on('domains.id', '=', 'last_status.domain_id');
-        // })->get();
-        // $lastStatus = DB::table('domain_checks')->select('domain_id', 'status_code')->groupBy('domain_id')->orderBy('updated_at');
-        // $domains = DB::select('SELECT domains.id, domains.name, 
-        // (SELECT status_code FROM domain_checks WHERE domains.id = domain_checks.domain_id ORDER BY updated_at DESC LIMIT 1) 
-        // AS status FROM domains 
-        // left JOIN domain_checks ON domains.id = domain_checks.domain_id GROUP BY domains.id');
+        })->orderBy('domains.id')->get();
         return view('domains.index', compact('domains'));
     }
 
