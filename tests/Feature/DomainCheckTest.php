@@ -28,8 +28,13 @@ class CheckTest extends TestCase
         $this->app->instance('GuzzleHttp\Client', $client);
         DB::table('domains')->insert(['name' => $name]);
         $id = DB::table('domains')->where('name', '=', $name)->value('id');
-        $this->post(route('check.store', ['id' => $id]));
-        $this->assertDatabaseHas('domain_checks', ['status_code' => 200 , 'domain_id' => $id, 'h1' => 'h1',
-        'description' => 'description', 'keywords' => 'keywords']);
+        $this->post(route('domain.check.store', ['id' => $id]));
+        $this->assertDatabaseHas('domain_checks', [
+            'status_code' => 200,
+            'domain_id' => $id,
+            'h1' => 'h1',
+            'description' => 'description',
+            'keywords' => 'keywords'
+        ]);
     }
 }

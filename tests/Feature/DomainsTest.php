@@ -31,6 +31,14 @@ class DomainsTest extends TestCase
 
     public function testIndex()
     {
+        $domains = [
+            'https://laravel.com',
+            'https://github.com'
+        ];
+        DB::table('domains')->insert([
+            ['name' => $domains[0]],
+            ['name' => $domains[1]]
+        ]);
         $response = $this->get(route('domain.index'));
 
         $response->assertStatus(200);

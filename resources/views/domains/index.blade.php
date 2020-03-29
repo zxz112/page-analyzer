@@ -16,7 +16,8 @@
     <tr> 
       <td>{{$domain->id}}</td>
       <td><a href="{{route('domain.show', $domain->id)}}"> {{$domain->name}}</a></td>
-      <td>{{$domain->status_code}}</td>
+      <td>{{collect($lastChecks->firstWhere('domain_id', $domain->id))->get('status_code')}}
+      </td>
     </tr>
     @endforeach
   </tbody>
