@@ -23,7 +23,8 @@ class DomainController extends Controller
     public function index()
     {
         $domains = DB::table('domains')->orderBy('id')->get();
-        $lastChecks = DB::table('domain_checks')->latest()->groupBy('domain_id')->get();
+        $lastChecksId = DB::table('domain_checks')->select(DB::raw('MAX(id)'))->groupBy('domain_id');
+        $lastChecks = DB::table('domain_checks')->whereIn('id', $lastChecksId)->get();
         $domainsWithChecks = $domains->map(function ($domain) use ($lastChecks) {
             $domain->status_code = collect($lastChecks->firstWhere('domain_id', $domain->id))->get('status_code');
             return $domain;
