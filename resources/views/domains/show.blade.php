@@ -46,7 +46,7 @@
     @endforeach
   </tbody>
 </table>
-{{Form::open(['url' => route('domain.check.store', ['id' => $domain->id])])}}
+{{Form::open(['url' => route('domain.check', ['domain' => $domain])])}}
     {{Form::submit('Check!', ['class' => 'btn btn-dark btn-bg'])}}
 {{Form::close()}}
 </div> 

@@ -18,24 +18,22 @@ class DomainCheckController extends Controller
         $this->client = $guzzleClient;
     }
 
-    public function store($id)
+    public function store(Request $request)
     {
-        $domain = DB::table('domains')->find($id);
-        $domainName = $domain->name;
+        $domain = $request->input('domain');
         try {
-            $response = $this->client->request('GET', $domainName);
+            $response = $this->client->request('GET', $domain['name']);
         } catch (RequestException $e) {
             flash('Error')->error();
-            return redirect()->route('domain.show', $id);
+            return redirect()->route('domain.show', $domain['id']);
         }
         $statusCode = $response->getStatusCode();
         $htmlPage = $response->getBody()->getContents();
         $timeNow = Carbon::now()->toDateTimeString();
         $parsedSeoHtml = Seo::parseSeoHtml($htmlPage);
         DB::table('domain_checks')->insert([
-            'domain_id' => $id,
+            'domain_id' => $domain['id'],
             'status_code' => $statusCode,
-            'created_at' => $timeNow,
             'h1' => $parsedSeoHtml['h1'],
             'description' => $parsedSeoHtml['description'],
             'keywords' => $parsedSeoHtml['keywords'],
@@ -43,6 +41,6 @@ class DomainCheckController extends Controller
             'created_at' => $timeNow
         ]);
         flash(' Website has been checked! ')->success();
-        return redirect()->route('domain.show', $id);
+        return redirect()->route('domain.show', $domain['id']);
     }
 }

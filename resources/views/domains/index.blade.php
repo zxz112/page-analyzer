@@ -12,11 +12,11 @@
     </tr>
   </thead>
   <tbody>
-  @foreach ($domains as $domain)
+  @foreach ($domainsWithChecks as $domain)
     <tr> 
       <td>{{$domain->id}}</td>
       <td><a href="{{route('domain.show', $domain->id)}}"> {{$domain->name}}</a></td>
-      <td>{{collect($lastChecks->firstWhere('domain_id', $domain->id))->get('status_code')}}
+      <td>{{$domain->status_code}}
       </td>
     </tr>
     @endforeach
