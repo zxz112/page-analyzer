@@ -23,7 +23,7 @@ class DomainsTest extends TestCase
     public function testStore()
     {
         $domain = 'https://mail.ru';
-        $response = $this->post(route('domain.store', ['domain' => $domain]));
+        $response = $this->post(route('domains.store', ['domain' => $domain]));
         $response->assertSessionHasNoErrors();
         $response->assertStatus(302);
         $this->assertDatabaseHas('domains', ['name' => $domain]);
@@ -39,7 +39,7 @@ class DomainsTest extends TestCase
             ['name' => $domains[0]],
             ['name' => $domains[1]]
         ]);
-        $response = $this->get(route('domain.index'));
+        $response = $this->get(route('domains.index'));
 
         $response->assertStatus(200);
     }
@@ -49,7 +49,7 @@ class DomainsTest extends TestCase
         $name = 'https://yandex.ru';
         DB::table('domains')->insert(['name' => $name]);
         $id = DB::table('domains')->where('name', '=', $name)->value('id');
-        $response = $this->get(route('domain.show', $id));
+        $response = $this->get(route('domains.show', $id));
 
         $response->assertStatus(200);
     }

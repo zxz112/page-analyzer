@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'DomainController@main')->name('domain.main');
+Route::get('/', 'DomainController@main')->name('domains.main');
 
-Route::post('/domains', 'DomainController@store')->name('domain.store');
+Route::post('/domains', 'DomainController@store')->name('domains.store');
 
-Route::get('/domains/{id}', 'DomainController@show')->name('domain.show');
+Route::get('/domains/{id}', 'DomainController@show')->name('domains.show');
 
-Route::get('/domains', 'DomainController@index')->name('domain.index');
+Route::get('/domains', 'DomainController@index')->name('domains.index');
 
-Route::post('/domains/check', 'DomainCheckController@store')->name('domain.check');
+Route::post('/domains/{domainId}/checks', 'DomainCheckController@store')->name('domains.checks.store');
