@@ -12,11 +12,11 @@
     </tr>
   </thead>
   <tbody>
-  @foreach ($domainsWithChecks as $domain)
+  @foreach ($domains as $domain)
     <tr> 
       <td>{{$domain->id}}</td>
       <td><a href="{{route('domains.show', $domain->id)}}"> {{$domain->name}}</a></td>
-      <td>{{$domain->status_code}}
+      <td>{{$checks[$domain->id]->status_code ?? ''}}
       </td>
     </tr>
     @endforeach

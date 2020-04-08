@@ -16,7 +16,7 @@ class CheckTest extends TestCase
      *
      * @return void
      */
-    public function testCheck()
+    public function testStore()
     {
         $html = file_get_contents(__DIR__ . "/../fixtures/testSeo.html");
         $name = 'https://vk.com';
