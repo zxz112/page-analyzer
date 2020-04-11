@@ -23,7 +23,7 @@ class DomainController extends Controller
     public function index()
     {
         $domains = DB::table('domains')->orderBy('id')->get();
-        $checks = DB::table('domain_checks')->orderByDesc('domain_id', 'updated_at')->get()->keyBy('domain_id');
+        $checks = DB::table('domain_checks')->distinct('domain_id')->orderByDesc('domain_id', 'updated_at')->latest('updated_at')->get()->keyBy('domain_id');
         return view('domains.index', compact(['domains', 'checks']));
     }
 

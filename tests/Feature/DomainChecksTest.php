@@ -28,7 +28,10 @@ class CheckTest extends TestCase
         $this->app->instance('GuzzleHttp\Client', $client);
         DB::table('domains')->insert(['name' => $name]);
         $domain = DB::table('domains')->where('name', '=', $name)->first();
-        $this->post(route('domains.checks.store', $domain->id));
+        $response = $this->post(route('domains.checks.store', $domain->id));
+        $response->assertSessionHasNoErrors();
+        $response->assertStatus(302);
+        $response->assertRedirect();
         $this->assertDatabaseHas('domain_checks', [
             'status_code' => 200,
             'domain_id' => $domain->id,

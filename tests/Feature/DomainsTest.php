@@ -26,6 +26,7 @@ class DomainsTest extends TestCase
         $response = $this->post(route('domains.store', ['domain' => $domain]));
         $response->assertSessionHasNoErrors();
         $response->assertStatus(302);
+        $response->assertRedirect();
         $this->assertDatabaseHas('domains', ['name' => $domain]);
     }
 
